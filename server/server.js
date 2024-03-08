@@ -1,4 +1,5 @@
 const express = require("express")
+const cors = require("cors")
 const connectDB = require("./config/database")
 const dotenv = require("dotenv").config()
 
@@ -11,15 +12,20 @@ connectDB()
 const app = express()
 const port = process.env.PORT
 
+// middlewares
+app.use(errorHandler);
+app.use(validateUser);
+app.use(cors({
+    origin: ['http://localhost:4200']
+}));
+
 // json parser
 app.use(express.json())
 
 // api route for user
 app.use("/blogverse/user", userRoutes)
 
-// middlewares
-app.use(errorHandler);
-app.use(validateUser);
+
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`)
